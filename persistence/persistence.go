@@ -2,6 +2,7 @@ package persistence
 
 import (
 	"log"
+	"os"
 
 	"github.com/asdine/storm/v3"
 )
@@ -9,8 +10,9 @@ import (
 var db *storm.DB
 
 func init() {
+	_ = os.MkdirAll("./db", os.ModePerm)
 	var err error
-	db, err = storm.Open("mqtt_data.db")
+	db, err = storm.Open("db/mqtt_data.db")
 	if err != nil {
 		log.Println("Failed to open db file")
 		panic(err.Error())
