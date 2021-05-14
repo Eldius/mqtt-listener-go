@@ -14,6 +14,7 @@ dockerbuild:
 		--platform linux/arm/v7,linux/arm64/v8,linux/amd64 \
 		--tag eldius/mqtt-listener-go:latest \
 		--tag eldius/mqtt-listener-go:$(shell git rev-parse --short HEAD) \
+		.
 
 
 start:

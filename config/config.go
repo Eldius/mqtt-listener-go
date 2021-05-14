@@ -21,3 +21,7 @@ func GetBrokerPass() string {
 func GetBrokerTopic() string {
 	return viper.GetString("broker.topic")
 }
+
+func GetBrokerAutoreconnect() bool {
+	return viper.GetBool("broker.reconnect")
+}

@@ -27,6 +27,7 @@ func Setup(cfgFile string) {
 		viper.SetConfigName(".mqtt-listener-go")
 	}
 
+	SetDefaults()
 	viper.SetEnvPrefix("mqtt")
 	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 	viper.AutomaticEnv() // read in environment variables that match
@@ -35,4 +36,8 @@ func Setup(cfgFile string) {
 	if err := viper.ReadInConfig(); err == nil {
 		fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
 	}
+}
+
+func SetDefaults() {
+	viper.SetDefault("broker.reconnect", true)
 }
