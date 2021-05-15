@@ -64,3 +64,22 @@ func ListSince(topic string, since time.Time) ([]*Entry, error) {
 
 	return results, err
 }
+
+func ListLastN(topic string, count int) ([]*Entry, error) {
+	results := make([]*Entry, 0)
+
+	constraints := q.And(
+		q.Eq("Topic", topic),
+	)
+
+	err := db.Select(constraints).
+		OrderBy("Timestamp").
+		Limit(count).
+		Find(&results)
+	if err != nil {
+		log.Println("Failed to fetch data from db")
+		log.Println(err.Error())
+	}
+
+	return results, err
+}
