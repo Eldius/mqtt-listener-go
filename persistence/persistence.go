@@ -3,8 +3,10 @@ package persistence
 import (
 	"log"
 	"os"
+	"time"
 
 	"github.com/asdine/storm/v3"
+	"github.com/asdine/storm/v3/q"
 )
 
 var db *storm.DB
@@ -37,6 +39,24 @@ func List(topic string) ([]*Entry, error) {
 	results := make([]*Entry, 0)
 
 	err := db.Find("Topic", topic, &results)
+	if err != nil {
+		log.Println("Failed to fetch data from db")
+		log.Println(err.Error())
+	}
+
+	return results, err
+}
+
+func ListSince(topic string, since time.Time) ([]*Entry, error) {
+	results := make([]*Entry, 0)
+
+	constraints := q.And(
+		q.Eq("Topic", topic),
+		q.Gte("Timestamp", since),
+	)
+
+	query := db.Select(constraints)
+	err := query.Find(&results)
 	if err != nil {
 		log.Println("Failed to fetch data from db")
 		log.Println(err.Error())

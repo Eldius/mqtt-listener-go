@@ -6,6 +6,7 @@ MQTT_BROKER_PORT = 1883
 MQTT_BROKER_USER = ""
 MQTT_BROKER_PASS = ""
 MQTT_BROKER_TOPIC = \#
+MQTT_BROKER_RECONNECT = true
 
 
 dockerbuild:
@@ -19,3 +20,6 @@ dockerbuild:
 
 start:
 	go run main.go start
+
+listen:
+	mosquitto_sub -h 192.168.100.195 -t '#'

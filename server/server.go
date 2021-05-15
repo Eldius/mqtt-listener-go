@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"time"
 
 	"log"
 
@@ -14,7 +15,23 @@ import (
 
 func QueryTopic(rw http.ResponseWriter, r *http.Request) {
 	q := r.URL.Query()
-	results, err := persistence.List(q.Get("t"))
+	topic := q.Get("t")
+
+	log.Println("---\nParameters:")
+	for k, v := range q {
+		log.Printf("- %s: %s\n", k, v)
+	}
+	var results []*persistence.Entry
+	if q.Get("s") != "" {
+		parsedSince, err := time.Parse(time.RFC3339, q.Get("since"))
+		if err != nil {
+			rw.WriteHeader(http.StatusBadRequest)
+			rw.Header().Set("Content-Type", "text/plain")
+			rw.Write([]byte(err.Error()))
+		}
+		persistence.ListSince(topic, parsedSince)
+	}
+	results, err := persistence.List(topic)
 	if err != nil {
 		rw.WriteHeader(http.StatusInternalServerError)
 		rw.Header().Set("Content-Type", "text/plain")
@@ -29,7 +46,7 @@ func QueryTopic(rw http.ResponseWriter, r *http.Request) {
 
 func Start(port int) {
 
-	go mqttclient.Start()
+	go mqttclient.Connect()
 
 	mux := http.NewServeMux()
 
