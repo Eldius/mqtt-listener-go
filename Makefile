@@ -18,8 +18,12 @@ dockerbuild:
 		.
 
 
-start:
+startback:
 	go run main.go start
+
+startfront:
+	cd static ; yarn start
+
 
 listen:
 	mosquitto_sub -h 192.168.100.195 -t '#'
