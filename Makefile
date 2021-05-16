@@ -17,7 +17,6 @@ dockerbuild:
 		--tag eldius/mqtt-listener-go:$(shell git rev-parse --short HEAD) \
 		.
 
-
 startback:
 	go run main.go start
 

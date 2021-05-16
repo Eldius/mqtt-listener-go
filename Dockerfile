@@ -1,4 +1,4 @@
-FROM node:lts-alpine3.13 as nodebuilder
+FROM node:lts as nodebuilder
 #FROM node:lts as nodebuilder
 #FROM node:14.16.1-alpine3.13 as nodebuilder
 #FROM node:lts-buster as nodebuilder
@@ -7,7 +7,7 @@ FROM node:lts-alpine3.13 as nodebuilder
 WORKDIR /app
 COPY ./static /app
 
-ENV REACT_APP_BACKEND_ENDPOINT=http://192.168.100.195/mqtt-listener
+ENV REACT_APP_BACKEND_ENDPOINT="http://192.168.100.195/mqtt-listener"
 
 RUN yarn install
 RUN yarn build
