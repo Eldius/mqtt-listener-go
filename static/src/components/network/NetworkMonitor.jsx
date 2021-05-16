@@ -64,7 +64,6 @@ const NetworkMonitor = props => {
                     <LineChart data={data.data} >
                         <Line type="monotone" dataKey="download" stroke="#00ff00" name="Download" unit=" Mbps" />
                         <Line type="monotone" dataKey="upload" stroke="#ff0000" name="Upload" unit=" Mbps" />
-                        <Line type="monotone" dataKey="upload" stroke="#ff0000" name="Min" />
                         <CartesianGrid stroke="#ccc" />
                         <XAxis
                             dataKey="timestamp"
