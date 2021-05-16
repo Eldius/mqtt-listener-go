@@ -11,3 +11,17 @@
     background-color: aqua;
 }
  */
+
+.netwotkMonitorFooter {
+    font-style: italic;
+    font-size: small;
+}
+
+.recharts-cartesian-axis-tick-value {
+    width: fit-content;
+}
+
+.NetworkResponsiveContainer {
+    margin: 20px;
+    padding: 20px;
+}
