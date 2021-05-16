@@ -42,4 +42,5 @@ func Setup(cfgFile string) {
 
 func SetDefaults() {
 	viper.SetDefault("broker.reconnect", true)
+	viper.SetDefault("fetch.max.qtt", 10)
 }

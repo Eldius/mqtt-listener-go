@@ -4,11 +4,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 	"time"
 
 	"log"
 
 	"github.com/Eldius/cors-interceptor-go/cors"
+	"github.com/Eldius/mqtt-listener-go/config"
 	"github.com/Eldius/mqtt-listener-go/mqttclient"
 	"github.com/Eldius/mqtt-listener-go/persistence"
 )
@@ -22,8 +24,20 @@ type ResultMode struct {
 func ListLastEntrys(rw http.ResponseWriter, r *http.Request) {
 	q := r.URL.Query()
 	topic := q.Get("t")
+	_qtt := q.Get("c")
+	var qtt int
+	if _qtt == "" {
+		qtt = config.GetDefaultFetchCount()
+	} else {
+		var err error
+		qtt, err = strconv.Atoi(_qtt)
+		if err != nil {
+			log.Printf("Failed to parse quantity (%s)\n%s\n", _qtt, err.Error())
+			qtt = config.GetDefaultFetchCount()
+		}
+	}
 
-	results, err := persistence.ListLastN(topic, 10)
+	results, err := persistence.ListLastN(topic, qtt)
 	if err != nil {
 		log.Printf("Failed to list last ebtrys:\n%s\n", err.Error())
 		rw.WriteHeader(http.StatusBadRequest)

@@ -25,3 +25,7 @@ func GetBrokerTopic() string {
 func GetBrokerAutoreconnect() bool {
 	return viper.GetBool("broker.reconnect")
 }
+
+func GetDefaultFetchCount() int {
+	return viper.GetInt("fetch.max.qtt")
+}
