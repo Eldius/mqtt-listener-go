@@ -7,7 +7,7 @@ MQTT_BROKER_USER = ""
 MQTT_BROKER_PASS = ""
 MQTT_BROKER_TOPIC = \#
 MQTT_BROKER_RECONNECT = true
-
+MQTT_CORS_ALLOW_ORIGINS = http://localhost:3000
 
 dockerbuild:
 	docker buildx build \

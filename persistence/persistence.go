@@ -74,6 +74,7 @@ func ListLastN(topic string, count int) ([]*Entry, error) {
 
 	err := db.Select(constraints).
 		OrderBy("Timestamp").
+		Reverse().
 		Limit(count).
 		Find(&results)
 	if err != nil {

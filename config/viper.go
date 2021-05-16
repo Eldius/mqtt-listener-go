@@ -6,6 +6,7 @@ import (
 	"os"
 	"strings"
 
+	corsConf "github.com/Eldius/cors-interceptor-go/config"
 	"github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -28,6 +29,7 @@ func Setup(cfgFile string) {
 	}
 
 	SetDefaults()
+	corsConf.SetDefaults()
 	viper.SetEnvPrefix("mqtt")
 	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 	viper.AutomaticEnv() // read in environment variables that match
