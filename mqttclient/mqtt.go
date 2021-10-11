@@ -10,10 +10,13 @@ import (
 	"os"
 
 	"github.com/Eldius/mqtt-listener-go/config"
+	"github.com/Eldius/mqtt-listener-go/model"
 	"github.com/Eldius/mqtt-listener-go/persistence"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"github.com/google/uuid"
 )
+
+var repo persistence.Repository
 
 var messagePubHandler mqtt.MessageHandler = func(_ mqtt.Client, msg mqtt.Message) {
 	log.Printf("Received message: %s from topic: %s\n", msg.Payload(), msg.Topic())
@@ -60,8 +63,8 @@ msg:
 `, m.Topic(), string(m.Payload()))
 	var values map[string]interface{}
 	json.Unmarshal(m.Payload(), &values)
-	entry := persistence.NewEntry(m.Topic(), values)
-	_, err := persistence.Persist(entry)
+	entry := model.NewEntry(m.Topic(), values)
+	_, err := repo.Persist(entry)
 	if err != nil {
 		log.Printf("Failed to persist message:\n%s\n", err.Error())
 	}
@@ -95,7 +98,8 @@ func buildOpts() *mqtt.ClientOptions {
 	return opts
 }
 
-func Connect() {
+func Connect(_repo persistence.Repository) {
+	repo = _repo
 	client := mqtt.NewClient(buildOpts())
 	if token := client.Connect(); token.Wait() && token.Error() != nil {
 		panic(token.Error())

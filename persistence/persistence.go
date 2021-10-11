@@ -1,86 +1,17 @@
 package persistence
 
 import (
-	"log"
-	"os"
 	"time"
 
-	"github.com/asdine/storm/v3"
-	"github.com/asdine/storm/v3/q"
+	"github.com/Eldius/mqtt-listener-go/model"
 )
 
-var db *storm.DB
-
-func init() {
-	_ = os.MkdirAll("./db", os.ModePerm)
-	var err error
-	db, err = storm.Open("db/mqtt_data.db")
-	if err != nil {
-		log.Println("Failed to open db file")
-		panic(err.Error())
-	}
-	err = db.Init(&Entry{})
-	if err != nil {
-		log.Println("Failed to index db")
-		panic(err.Error())
-	}
-}
-
-func Persist(e *Entry) (*Entry, error) {
-	err := db.Save(e)
-	if err != nil {
-		log.Println("Failed to persist data to db")
-		log.Println(err.Error())
-	}
-	return e, err
-}
-
-func List(topic string) ([]*Entry, error) {
-	results := make([]*Entry, 0)
-
-	err := db.Find("Topic", topic, &results)
-	if err != nil {
-		log.Println("Failed to fetch data from db")
-		log.Println(err.Error())
-	}
-
-	return results, err
-}
-
-func ListSince(topic string, since time.Time) ([]*Entry, error) {
-	results := make([]*Entry, 0)
-
-	constraints := q.And(
-		q.Eq("Topic", topic),
-		q.Gte("Timestamp", since),
-	)
-
-	query := db.Select(constraints)
-	err := query.Find(&results)
-	if err != nil {
-		log.Println("Failed to fetch data from db")
-		log.Println(err.Error())
-	}
-
-	return results, err
-}
-
-func ListLastN(topic string, count int) ([]*Entry, error) {
-	results := make([]*Entry, 0)
-
-	constraints := q.And(
-		q.Eq("Topic", topic),
-	)
-
-	err := db.Select(constraints).
-		OrderBy("Timestamp").
-		Reverse().
-		Limit(count).
-		Find(&results)
-	if err != nil {
-		log.Println("Failed to fetch data from db")
-		log.Println(err.Error())
-	}
-
-	return results, err
+type Repository interface {
+	Persist(*model.Entry) (*model.Entry, error)
+	List(topic string) ([]*model.Entry, error)
+	ListSince(topic string, since time.Time) ([]*model.Entry, error)
+	ListLastN(topic string, count int) ([]*model.Entry, error)
+	ListLastNGroupingBy(topic string, groupByField string, count int) (map[string][]*model.Entry, error)
+	ListSinceNetworkEntriesGroupingByServer(topic string, since time.Time) (map[string][]*model.Entry, error)
+	ListNetworkEntriesGroupingByServer(topic string) (map[string][]*model.Entry, error)
 }

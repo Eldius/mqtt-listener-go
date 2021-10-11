@@ -8,7 +8,7 @@ console.log(baseUrl);
 
 class NetworkService {
     async networkData() {
-        return fetch(baseUrl + "/last?t=/network/modem&c=" + fetchQuantity)
+        return fetch(baseUrl + "/network/query?t=/raspberry/sala")
             .then(d => d.json());
     }
 }

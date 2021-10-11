@@ -61,7 +61,8 @@ const NetworkMonitor = props => {
             <h2>NetworkMonitor</h2>
             <div className="NetworkResponsiveContainer" >
                 <ResponsiveContainer width='100%' aspect={3.0 / 1.0}>
-                    <LineChart data={data.data} >
+                    {data.data.map(function(d, name) {
+                        <LineChart data={d.data} >
                         <Line type="monotone" dataKey="download" stroke="#00ff00" name="Download" unit=" Mbps" />
                         <Line type="monotone" dataKey="upload" stroke="#ff0000" name="Upload" unit=" Mbps" />
                         <CartesianGrid stroke="#ccc" />
@@ -78,6 +79,7 @@ const NetworkMonitor = props => {
                         }} className="networkTooltip" labelFormatter={(unixTime) => "Time: " + moment(unixTime).format('DD/MM HH:mm:ss')} />
                         <Legend />
                     </LineChart>
+                })}
                 </ResponsiveContainer>
             </div>
             <div>

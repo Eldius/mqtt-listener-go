@@ -29,3 +29,11 @@ func GetBrokerAutoreconnect() bool {
 func GetDefaultFetchCount() int {
 	return viper.GetInt("fetch.max.qtt")
 }
+
+func GetMongoURL() string {
+	return viper.GetString("mongo.url")
+}
+
+func UseMongoPersistence() bool {
+	return viper.IsSet("mongo.url")
+}
