@@ -20,13 +20,13 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build Linux amd64 Version
-        run: go build -v -o bin/mqtt-listener.linux.amd64 -a -ldflags '-extldflags "-static"'  -ldflags' .
+        run: go build -v -o bin/mqtt-listener.linux.amd64 -a -ldflags '-extldflags "-static"'
         env:
           GOOS: linux
           GOARCH: amd64
 
       - name: Build Raspberry Version
-        run: go build -v -o bin/mqtt-listener.raspberry -a -ldflags '-extldflags "-static"'  -ldflags' .
+        run: go build -v -o bin/mqtt-listener.raspberry -a -ldflags '-extldflags "-static"'
         env:
           GOOS: linux
           GOARCH: arm
