@@ -11,5 +11,5 @@ repo=mqtt-listener-go
 
 wget "$( curl https://api.github.com/repos/${owner}/${repo}/releases | jq -r '. | sort_by(.created_at) | last | .assets[] | select(.name | endswith(".raspberry")) | .browser_download_url' )"
 
-mv speedtest-wrapper* speedtest-wrapper
-sudo mv speedtest-wrapper /usr/bin
+mv mqtt-listener* mqtt-listener
+sudo mv mqtt-listener /usr/bin
